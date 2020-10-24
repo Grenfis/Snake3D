@@ -7,6 +7,8 @@ export default class Game {
         this.run = true;
 
         this.initField();
+
+        document.body.addEventListener('keydown', e => this.handleInput(e));
     }
 
     initField() {
@@ -33,5 +35,8 @@ export default class Game {
         });
         this.render.render();
         window.requestAnimationFrame(() => this.tick());
+    }
+
+    handleInput(e) {
     }
 }
