@@ -8,7 +8,7 @@
     "watch": "NODE_ENV=development webpack --watch"
   },
   "dependencies": {
-    "three.js": "^0.77.1"
+    "three": "^0.121.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
