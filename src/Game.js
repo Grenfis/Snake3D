@@ -5,7 +5,6 @@ export default class Game {
     constructor() {
         this.render = new Render();
         this.run = true;
-        this.field = [];
 
         this.initField();
     }

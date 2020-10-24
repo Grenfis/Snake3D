@@ -9,7 +9,7 @@ export default Object.freeze({
         width: window.innerWidth,
         height: window.innerHeight,
         camera: {
-            zPosition: 10,
+            zPosition: 5,
         },
     },
     world: {

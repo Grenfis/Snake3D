@@ -12,7 +12,10 @@ export default class Render {
         this.renderer = new ThreeJs.WebGLRenderer();
         this.renderQueue = [];
         this.gridHelper = new ThreeJs.GridHelper(100, 10);
+
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+        this.light = new ThreeJs.DirectionalLight(0xffffff, 1);
+        this.sky = new ThreeJs.AmbientLight(0xffffff, 2);
 
         this.init();
     }
@@ -24,8 +27,17 @@ export default class Render {
     }
 
     render() {
+        this.light.position.set(
+            this.camera.position.x,
+            this.camera.position.y,
+            this.camera.position.z
+        );
+
         const scene = new ThreeJs.Scene();
         scene.add(this.gridHelper);
+        scene.add(this.light);
+        scene.add(this.light.target);
+        scene.add(this.sky);
         this.renderQueue.forEach(obj => scene.add(obj.getMesh()));
 
         this.controls.update();

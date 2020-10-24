@@ -18,7 +18,7 @@ export default class Cube extends Drawable {
             Config.world.block.size,
             Config.world.block.size
         );
-        this.material = new ThreeJs.MeshBasicMaterial({color: 0x00ff00});
+        this.material = new ThreeJs.MeshPhongMaterial({color: 0x101010});
         this.position = new Vector3(
             x * (Config.world.block.size + Config.world.block.gap / 2),
             y * (Config.world.block.size + Config.world.block.gap / 2),
