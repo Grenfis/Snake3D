@@ -1,4 +1,4 @@
-export default {
+export default Object.freeze({
     render: {
         fov: 75,
         aspect: window.innerWidth / window.innerHeight,
@@ -9,7 +9,13 @@ export default {
         width: window.innerWidth,
         height: window.innerHeight,
         camera: {
-            zPosition: 25,
-        }
+            zPosition: 10,
+        },
+    },
+    world: {
+        block: {
+            size: 1,
+            gap: 0.2
+        },
     }
-}
+});

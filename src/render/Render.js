@@ -1,5 +1,6 @@
 import * as ThreeJs from "three";
 import Config from "../Config";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 
 export default class Render {
     constructor() {
@@ -10,6 +11,8 @@ export default class Render {
             Config.render.viewport.far);
         this.renderer = new ThreeJs.WebGLRenderer();
         this.renderQueue = [];
+        this.gridHelper = new ThreeJs.GridHelper(100, 10);
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
         this.init();
     }
@@ -22,7 +25,10 @@ export default class Render {
 
     render() {
         const scene = new ThreeJs.Scene();
+        scene.add(this.gridHelper);
         this.renderQueue.forEach(obj => scene.add(obj.getMesh()));
+
+        this.controls.update();
         this.renderer.render(scene, this.camera);
         this.renderQueue = [];
     }

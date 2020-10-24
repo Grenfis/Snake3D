@@ -1,14 +1,29 @@
 import * as ThreeJs from "three";
 import Drawable from "./Drawable";
 import {Vector3} from "three";
+import Config from "../Config";
 
 export default class Cube extends Drawable {
-    constructor() {
+    /**
+     * Координаты, выравненые на сетку
+     * @param x
+     * @param y
+     * @param z
+     */
+    constructor(x = 0, y = 0, z = 0) {
         super();
 
-        this.geometry = new ThreeJs.BoxGeometry(10,10,10);
+        this.geometry = new ThreeJs.BoxGeometry(
+            Config.world.block.size,
+            Config.world.block.size,
+            Config.world.block.size
+        );
         this.material = new ThreeJs.MeshBasicMaterial({color: 0x00ff00});
-        this.position = new Vector3(0, 0, 0);
+        this.position = new Vector3(
+            x * (Config.world.block.size + Config.world.block.gap / 2),
+            y * (Config.world.block.size + Config.world.block.gap / 2),
+            z * (Config.world.block.size + Config.world.block.gap / 2)
+        );
     }
 
     getGeometry() {
