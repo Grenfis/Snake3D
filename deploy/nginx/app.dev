@@ -1,0 +1,14 @@
+server {
+        listen 80;
+        charset utf-8;
+
+        access_log /var/log/nginx/app.access.log;
+        error_log /var/log/nginx/app.error.log;
+
+        root /var/www/app;
+        index index.html;
+
+        location / {
+            try_files $uri $uri/ /index.html?$args;
+        }
+}

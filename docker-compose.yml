@@ -1,0 +1,9 @@
+version: "3"
+services:
+  nginx:
+    build:
+      context: "./deploy/nginx"
+    ports:
+      - "80:80"
+    volumes:
+      - ./public:/var/www/app
