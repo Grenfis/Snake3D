@@ -1,31 +1,30 @@
 import * as ThreeJs from "three";
 import Drawable from "./Drawable";
-import {Vector3, TextureLoader} from "three";
+import {Vector3, Texture} from "three";
 import Config from "../Config";
 
 export default class Cube extends Drawable {
     /**
      * Координаты, выравненые на сетку
-     * @param x
-     * @param y
-     * @param z
+     * @param {Number} data.x
+     * @param {Number} data.y
+     * @param {Number} data.z
+     * @param {Number} data.w
+     * @param {Texture} data.texture
      */
-    constructor(x = 0, y = 0, z = 0) {
+    constructor(data) {
         super();
 
         this.geometry = new ThreeJs.BoxGeometry(
-            Config.world.block.size,
-            Config.world.block.size,
-            Config.world.block.size
+            data.w,data.w,data.w
         );
-        const loader = new TextureLoader();
         this.material = new ThreeJs.MeshPhongMaterial({
-            map: loader.load('/asstes/box.jpg'),
+            map: data.texture,
         });
         this.position = new Vector3(
-            x * (Config.world.block.size + Config.world.block.gap / 2),
-            y * (Config.world.block.size + Config.world.block.gap / 2),
-            z * (Config.world.block.size + Config.world.block.gap / 2)
+            data.x * (Config.world.block + Config.world.gap / 2),
+            data.y * (Config.world.block + Config.world.gap / 2),
+            data.z * (Config.world.block + Config.world.gap / 2)
         );
     }
 

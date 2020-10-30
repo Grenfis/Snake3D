@@ -14,9 +14,8 @@ export default Object.freeze({
         },
     },
     world: {
-        block: {
-            size: 1,
-            gap: 0.2
-        },
+        gap: 0.2,
+        block: 1,
+        snake: 0.5,
     }
 });

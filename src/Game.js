@@ -1,10 +1,11 @@
 import Render from "./render/Render";
-import Cube from "./render/Cube";
 import * as ThreeJs from "three";
 import Config from "./Config";
 import Camera from "./render/Camera";
 import Rotation from "./render/animation/Rotation";
 import {Vector3} from "three";
+import DrawableFactory from "./render/DrawableFactory";
+import Player from "./Player";
 
 export default class Game {
     constructor() {
@@ -13,6 +14,7 @@ export default class Game {
         this.clock = new ThreeJs.Clock();
         this.deltaTime = 0;
         this.frameRate = 1 / Config.render.frameRate;
+        this.player = new Player();
 
         this.initField();
 
@@ -20,28 +22,35 @@ export default class Game {
     }
 
     initField() {
+        const factory = new DrawableFactory();
         this.field = [
-            new Cube(-1, -1, 1), new Cube(0, -1, 1), new Cube(1, -1, 1),
-            new Cube(-1, 0, 1), new Cube(0, 0, 1), new Cube(1, 0, 1),
-            new Cube(-1, 1, 1), new Cube(0, 1, 1), new Cube(1, 1, 1),
-            new Cube(-1, 1, 0), new Cube(0, 1, 0), new Cube(1, 1, 0),
-            new Cube(-1, 1, -1), new Cube(0, 1, -1), new Cube(1, 1, -1),
-            new Cube(-1, 0, -1), new Cube(0, 0, -1), new Cube(1, 0, -1),
-            new Cube(-1, -1, -1), new Cube(0, -1, -1), new Cube(1, -1, -1),
-            new Cube(-1, -1, 0), new Cube(0, -1, 0), new Cube(1, -1, 0),
-            new Cube(-1, 0, 0), new Cube(1, 0, 0),
+            factory.getFieldBox(-1, -1, 1), factory.getFieldBox(0, -1, 1), 
+            factory.getFieldBox(1, -1, 1), factory.getFieldBox(-1, 0, 1),
+            factory.getFieldBox(0, 0, 1), factory.getFieldBox(1, 0, 1),
+            factory.getFieldBox(-1, 1, 1), factory.getFieldBox(0, 1, 1),
+            factory.getFieldBox(1, 1, 1), factory.getFieldBox(-1, 1, 0),
+            factory.getFieldBox(0, 1, 0), factory.getFieldBox(1, 1, 0),
+            factory.getFieldBox(-1, 1, -1), factory.getFieldBox(0, 1, -1),
+            factory.getFieldBox(1, 1, -1), factory.getFieldBox(-1, 0, -1),
+            factory.getFieldBox(0, 0, -1), factory.getFieldBox(1, 0, -1),
+            factory.getFieldBox(-1, -1, -1), factory.getFieldBox(0, -1, -1),
+            factory.getFieldBox(1, -1, -1), factory.getFieldBox(-1, -1, 0),
+            factory.getFieldBox(0, -1, 0), factory.getFieldBox(1, -1, 0),
+            factory.getFieldBox(-1, 0, 0), factory.getFieldBox(1, 0, 0),
         ];
     }
 
     tick() {
-        this.field.forEach(cube => {
-            this.render.pushToRender(cube);
-        });
-
         const delta = this.clock.getDelta();
         this.deltaTime += delta;
 
         if (this.deltaTime > this.frameRate) {
+            this.field.forEach(cube => {
+                this.render.pushToRender(cube);
+            });
+
+            this.player.draw(this.render);
+
             this.render.render(delta);
             this.deltaTime = this.deltaTime % this.frameRate;
         }
