@@ -1,5 +1,6 @@
 export default Object.freeze({
     render: {
+        frameRate: 60,
         fov: 75,
         aspect: window.innerWidth / window.innerHeight,
         viewport: {
