@@ -10,12 +10,12 @@ export default Object.freeze({
         width: window.innerWidth,
         height: window.innerHeight,
         camera: {
-            zPosition: 5,
+            zPosition: 7,
         },
     },
     world: {
         gap: 0.2,
         block: 1,
-        snake: 0.5,
+        snake: 0.7,
     }
 });

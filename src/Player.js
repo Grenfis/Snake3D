@@ -1,8 +1,12 @@
 import DrawableFactory from "./render/DrawableFactory";
 
 export default class Player {
-    constructor() {
-        this.drawableFactory = new DrawableFactory();
+    /**
+     *
+     * @param {DrawableFactory} drawableFactory
+     */
+    constructor(drawableFactory) {
+        this.drawableFactory = drawableFactory;
         this.body = [
             this.drawableFactory.getSnakeHead(0, 0, 2),
         ];

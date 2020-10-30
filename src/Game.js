@@ -4,8 +4,8 @@ import Config from "./Config";
 import Camera from "./render/Camera";
 import Rotation from "./render/animation/Rotation";
 import {Vector3} from "three";
-import DrawableFactory from "./render/DrawableFactory";
 import Player from "./Player";
+import DrawableFactory from "./render/DrawableFactory";
 
 export default class Game {
     constructor() {
@@ -14,7 +14,8 @@ export default class Game {
         this.clock = new ThreeJs.Clock();
         this.deltaTime = 0;
         this.frameRate = 1 / Config.render.frameRate;
-        this.player = new Player();
+        this.drawableFactory = new DrawableFactory();
+        this.player = new Player(this.drawableFactory);
 
         this.initField();
 
@@ -22,21 +23,20 @@ export default class Game {
     }
 
     initField() {
-        const factory = new DrawableFactory();
         this.field = [
-            factory.getFieldBox(-1, -1, 1), factory.getFieldBox(0, -1, 1), 
-            factory.getFieldBox(1, -1, 1), factory.getFieldBox(-1, 0, 1),
-            factory.getFieldBox(0, 0, 1), factory.getFieldBox(1, 0, 1),
-            factory.getFieldBox(-1, 1, 1), factory.getFieldBox(0, 1, 1),
-            factory.getFieldBox(1, 1, 1), factory.getFieldBox(-1, 1, 0),
-            factory.getFieldBox(0, 1, 0), factory.getFieldBox(1, 1, 0),
-            factory.getFieldBox(-1, 1, -1), factory.getFieldBox(0, 1, -1),
-            factory.getFieldBox(1, 1, -1), factory.getFieldBox(-1, 0, -1),
-            factory.getFieldBox(0, 0, -1), factory.getFieldBox(1, 0, -1),
-            factory.getFieldBox(-1, -1, -1), factory.getFieldBox(0, -1, -1),
-            factory.getFieldBox(1, -1, -1), factory.getFieldBox(-1, -1, 0),
-            factory.getFieldBox(0, -1, 0), factory.getFieldBox(1, -1, 0),
-            factory.getFieldBox(-1, 0, 0), factory.getFieldBox(1, 0, 0),
+            this.drawableFactory.getFieldBox(-1, -1, 1), this.drawableFactory.getFieldBox(0, -1, 1), 
+            this.drawableFactory.getFieldBox(1, -1, 1), this.drawableFactory.getFieldBox(-1, 0, 1),
+            this.drawableFactory.getFieldBox(0, 0, 1), this.drawableFactory.getFieldBox(1, 0, 1),
+            this.drawableFactory.getFieldBox(-1, 1, 1), this.drawableFactory.getFieldBox(0, 1, 1),
+            this.drawableFactory.getFieldBox(1, 1, 1), this.drawableFactory.getFieldBox(-1, 1, 0),
+            this.drawableFactory.getFieldBox(0, 1, 0), this.drawableFactory.getFieldBox(1, 1, 0),
+            this.drawableFactory.getFieldBox(-1, 1, -1), this.drawableFactory.getFieldBox(0, 1, -1),
+            this.drawableFactory.getFieldBox(1, 1, -1), this.drawableFactory.getFieldBox(-1, 0, -1),
+            this.drawableFactory.getFieldBox(0, 0, -1), this.drawableFactory.getFieldBox(1, 0, -1),
+            this.drawableFactory.getFieldBox(-1, -1, -1), this.drawableFactory.getFieldBox(0, -1, -1),
+            this.drawableFactory.getFieldBox(1, -1, -1), this.drawableFactory.getFieldBox(-1, -1, 0),
+            this.drawableFactory.getFieldBox(0, -1, 0), this.drawableFactory.getFieldBox(1, -1, 0),
+            this.drawableFactory.getFieldBox(-1, 0, 0), this.drawableFactory.getFieldBox(1, 0, 0),
         ];
     }
 
