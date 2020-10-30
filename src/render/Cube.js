@@ -1,6 +1,6 @@
 import * as ThreeJs from "three";
 import Drawable from "./Drawable";
-import {Vector3} from "three";
+import {Vector3, TextureLoader} from "three";
 import Config from "../Config";
 
 export default class Cube extends Drawable {
@@ -18,7 +18,10 @@ export default class Cube extends Drawable {
             Config.world.block.size,
             Config.world.block.size
         );
-        this.material = new ThreeJs.MeshPhongMaterial({color: 0x101010});
+        const loader = new TextureLoader();
+        this.material = new ThreeJs.MeshPhongMaterial({
+            map: loader.load('/asstes/box.jpg'),
+        });
         this.position = new Vector3(
             x * (Config.world.block.size + Config.world.block.gap / 2),
             y * (Config.world.block.size + Config.world.block.gap / 2),

@@ -1,7 +1,5 @@
 import Config from "../Config";
 import * as ThreeJs from "three";
-import Rotation from "./animation/Rotation";
-import {Vector3} from "three";
 
 export default class Camera {
     constructor() {

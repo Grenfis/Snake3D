@@ -1,6 +1,4 @@
 import * as ThreeJs from "three";
-import {Vector3} from "three";
-import Rotation from "./animation/Rotation";
 
 export default class Render {
     constructor(camera) {
@@ -10,8 +8,7 @@ export default class Render {
         this.renderQueue = [];
         this.animationQueue = [];
 
-        this.light = new ThreeJs.DirectionalLight(0xffffff, .5);
-        this.sky = new ThreeJs.AmbientLight(0xffffff, 3);
+        this.sky = new ThreeJs.AmbientLight(0xffffff, 0.6);
 
         this.init();
     }
@@ -26,12 +23,8 @@ export default class Render {
      * @param {Number} dt
      */
     render(dt) {
-        this.light.position.copy(this.camera.getCamera().position);
-
         const scene = new ThreeJs.Scene();
 
-        scene.add(this.light);
-        scene.add(this.light.target);
         scene.add(this.sky);
         scene.add(this.camera.getPivot());
 

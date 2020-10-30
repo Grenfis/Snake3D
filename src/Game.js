@@ -65,19 +65,19 @@ export default class Game {
         switch (key) {
             case 'ArrowUp':
                 dir = new Vector3(1, 0, 0);
-                angle = 90;
+                angle = -90;
                 break;
             case 'ArrowDown':
                 dir = new Vector3(1, 0, 0);
-                angle = -90;
+                angle = 90;
                 break;
             case 'ArrowLeft':
                 dir = new Vector3(0, 1, 0);
-                angle = 90;
+                angle = -90;
                 break;
             case 'ArrowRight':
                 dir = new Vector3(0, 1, 0);
-                angle = -90;
+                angle = 90;
                 break;
         }
         this.camera.setPlayingAnimation(true);
