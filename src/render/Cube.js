@@ -43,4 +43,12 @@ export default class Cube extends Drawable {
     setPosition(x, y, z) {
         this.position.set(x, y, z);
     }
+
+    /**
+     *
+     * @param {Vector3} dir
+     */
+    move(dir) {
+        this.position.add(dir);
+    }
 }

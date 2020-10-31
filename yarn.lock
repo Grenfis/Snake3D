@@ -2004,6 +2004,11 @@ three@^0.121.1:
   resolved "https://registry.yarnpkg.com/three/-/three-0.121.1.tgz#fda39cf4701d02be9c3be5c27ccea24b7a1ea59b"
   integrity sha512-+rYhNpW5W1aBdLkPQDld/GA4Sj/uOKJJKVpCAZUbpk/HZEiYRUlPt8+s+9nmxRglWmRHdBa3ERvUwqg4nmoA5w==
 
+throttle-debounce@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/throttle-debounce/-/throttle-debounce-3.0.0.tgz#8d7fd809e123599b17c8d3cf0ee4c4106ab099f8"
+  integrity sha512-2B0b5wmu8Hpmtsh9Q+1Lk7Eq0dd1u1XQAifrZr0EMshB80MthC1K7BK3FHG27VQ7g1GuW7fFThiobIjCTCIBTw==
+
 to-fast-properties@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/to-fast-properties/-/to-fast-properties-2.0.0.tgz#dc5e698cbd079265bc73e0377681a4e4e83f616e"

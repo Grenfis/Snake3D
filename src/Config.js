@@ -10,12 +10,20 @@ export default Object.freeze({
         width: window.innerWidth,
         height: window.innerHeight,
         camera: {
-            zPosition: 7,
+            zPosition: 7, //удаленность камеры
         },
     },
     world: {
         gap: 0.2,
-        block: 1,
-        snake: 0.7,
+        block: 1, //размер блока поля
+        snake: 0.7, //размер блока змеи
+        field: {
+            size: 3, //количество блоков поля прим. 3х3х3
+        }
+    },
+    game: {
+        snake: {
+            speed: 1000, //как часто делается шаг
+        }
     }
 });

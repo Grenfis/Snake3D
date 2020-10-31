@@ -49,6 +49,7 @@ export default class Game {
                 this.render.pushToRender(cube);
             });
 
+            this.player.update();
             this.player.draw(this.render);
 
             this.render.render(delta);
@@ -59,7 +60,8 @@ export default class Game {
 
     handleInput(e) {
         if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-            this.rotateCamera(e.key);
+           // this.rotateCamera(e.key);
+            this.player.handleInput(e.key);
         }
     }
 
