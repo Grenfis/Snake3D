@@ -15,7 +15,7 @@ export default Object.freeze({
         },
     },
     world: {
-        gap: 0.1,
+        gap: 0,
         block: 1, //размер блока поля
         snake: 0.7, //размер блока змеи
         field: {

@@ -15,7 +15,7 @@ export default class Game {
         this.deltaTime = 0;
         this.frameRate = 1 / Config.render.frameRate;
         this.drawableFactory = new DrawableFactory();
-        this.player = new Player(this.drawableFactory);
+        this.player = new Player(this.drawableFactory, this.render, this.camera);
 
         this.initField();
 
@@ -63,44 +63,5 @@ export default class Game {
            //this.rotateCamera(e.key);
            this.player.handleInput(e.key);
         }
-    }
-
-    rotateCamera(key) {
-        if (this.camera.isPlayingAnimation()) {
-            return;
-        }
-
-        let angle = 0;
-        let dir = null;
-
-        switch (key) {
-            case 'ArrowUp':
-                dir = new Vector3(1, 0, 0);
-                angle = -90;
-                break;
-            case 'ArrowDown':
-                dir = new Vector3(1, 0, 0);
-                angle = 90;
-                break;
-            case 'ArrowLeft':
-                dir = new Vector3(0, 1, 0);
-                angle = -90;
-                break;
-            case 'ArrowRight':
-                dir = new Vector3(0, 1, 0);
-                angle = 90;
-                break;
-        }
-        this.camera.setPlayingAnimation(true);
-        this.render.pushAnimation(
-            (new Rotation(
-                this.camera.getPivot(),
-                dir,
-                angle,
-                Config.render.camera.speed,
-            )).onComplete(() => {
-                this.camera.setPlayingAnimation(false);
-            })
-        );
     }
 }
