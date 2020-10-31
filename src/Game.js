@@ -49,8 +49,8 @@ export default class Game {
                 this.render.pushToRender(cube);
             });
 
-            this.player.update();
             this.player.draw(this.render);
+            this.player.update();
 
             this.render.render(delta);
             this.deltaTime = this.deltaTime % this.frameRate;
@@ -60,8 +60,8 @@ export default class Game {
 
     handleInput(e) {
         if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-           // this.rotateCamera(e.key);
-            this.player.handleInput(e.key);
+           //this.rotateCamera(e.key);
+           this.player.handleInput(e.key);
         }
     }
 
@@ -97,6 +97,7 @@ export default class Game {
                 this.camera.getPivot(),
                 dir,
                 angle,
+                Config.render.camera.speed,
             )).onComplete(() => {
                 this.camera.setPlayingAnimation(false);
             })

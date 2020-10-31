@@ -101,6 +101,8 @@ export default class Player {
             this.drawableFactory.getSnakeHead(0, 0, 2),
         ];
         this.direction = new Vector3(1, 0, 0);
+        this.firstRun = true; //является ли итерация перемещения первой в игре
+        this.side = SIDES.SIDE_1;
     }
 
     draw(render) {
@@ -114,7 +116,12 @@ export default class Player {
             this.updateFunction = throttle(
                 Config.game.snake.speed,
                 () => {
-                    this.applyMovement();
+                    // пропускаем первую итерацию перемещения
+                    if (this.firstRun) {
+                        this.firstRun = false;
+                        return;
+                    }
+                   this.applyMovement();
                 }
             );
         }
@@ -122,11 +129,24 @@ export default class Player {
     }
 
     applyMovement() {
-        const halfLength = Math.floor(Config.world.field.size / 2);
+        const bound = Config.world.field.size - 1;
         const position = this.body[0].position;
 
+        const axesY = DIRECTIONS[this.side].up.y !== 0 ? 'y' : 'z'; // название оси по вертикали
+        const axesX = DIRECTIONS[this.side].left.y !== 0 ? 'y' : 'x'; // название оси по горизонтали
+
+        if (Math.abs(position[axesX]) >= bound) {
+            //todo: поворот по горизонтали
+            return;
+        }
+
+        if (Math.abs(position[axesY]) >= bound) {
+            //todo: поворот по вертикали
+            return;
+        }
+
         this.body.forEach(bodyPart => {
-            bodyPart.move(this.direction);
+           bodyPart.move(this.direction);
         });
     }
 

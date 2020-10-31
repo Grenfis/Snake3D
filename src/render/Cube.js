@@ -22,9 +22,9 @@ export default class Cube extends Drawable {
             map: data.texture,
         });
         this.position = new Vector3(
-            data.x * (Config.world.block + Config.world.gap / 2),
-            data.y * (Config.world.block + Config.world.gap / 2),
-            data.z * (Config.world.block + Config.world.gap / 2)
+            data.x * (Config.world.block + Config.world.gap),
+            data.y * (Config.world.block + Config.world.gap),
+            data.z * (Config.world.block + Config.world.gap)
         );
     }
 

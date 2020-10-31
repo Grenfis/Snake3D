@@ -11,10 +11,11 @@ export default Object.freeze({
         height: window.innerHeight,
         camera: {
             zPosition: 7, //удаленность камеры
+            speed: 5, //скорость вращения камеры
         },
     },
     world: {
-        gap: 0.2,
+        gap: 0.1,
         block: 1, //размер блока поля
         snake: 0.7, //размер блока змеи
         field: {
