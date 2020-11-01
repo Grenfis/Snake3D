@@ -1,4 +1,4 @@
-import DrawableFactory from "./render/DrawableFactory";
+import ObjectFactory from "./ObjectFactory";
 import {Vector3} from "three";
 import {throttle} from "throttle-debounce";
 import Config from "./Config";
@@ -23,13 +23,13 @@ const DIRECTIONS = Object.freeze({
 export default class Player {
     /**
      *
-     * @param {DrawableFactory} drawableFactory
+     * @param {ObjectFactory} objectFactory
      * @param {Render} render
      * @param {Camera} camera
      */
-    constructor(drawableFactory, render, camera) {
-        this.drawableFactory = drawableFactory;
-        this.head = this.drawableFactory.getSnakeHead(0, 0, 2);
+    constructor(objectFactory, render, camera) {
+        this.objectFactory = objectFactory;
+        this.head = this.objectFactory.getSnakeHead(0, 0, 2);
         this.body = [];
         this.firstRun = true; //является ли итерация перемещения первой в игре
         this.direction = DIRECTION.RIGHT;

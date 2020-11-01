@@ -1,7 +1,7 @@
 import * as ThreeJs from "three";
-import Drawable from "./Drawable";
+import Drawable from "./render/Drawable";
 import {Vector3, Texture} from "three";
-import Config from "../Config";
+import Config from "./Config";
 
 export default class Cube extends Drawable {
     /**

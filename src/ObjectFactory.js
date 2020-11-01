@@ -1,8 +1,8 @@
 import {TextureLoader} from "three";
 import Cube from "./Cube";
-import Config from "../Config";
+import Config from "./Config";
 
-export default class DrawableFactory {
+export default class ObjectFactory {
     constructor() {
         this.loader = new TextureLoader();
     }
@@ -46,4 +46,16 @@ export default class DrawableFactory {
         });
     }
 
+    /**
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     */
+    getApple(x, y, z) {
+        return new Cube({
+            x, y, z,
+            texture: this.loader.load('/asstes/apple.jpg'),
+            w: Config.world.apple,
+        });
+    }
 }
