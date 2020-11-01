@@ -6,7 +6,6 @@ import {DIRECTION, DIRECTIONS, OBJECT_TYPES} from "./Constants";
 
 export default class Player {
     /**
-     *
      * @param {Game} game
      */
     constructor(game) {
@@ -26,12 +25,19 @@ export default class Player {
         this.head.setOnCollision(obj => this.collision(obj));
     }
 
+    /**
+     * Отрисовка тела змеи(голова отдельно)
+     * @param {Render} render
+     */
     draw(render) {
         this.body.forEach(bodyPart => {
             render.pushToRender(bodyPart);
         });
     }
 
+    /**
+     * Обновление состояния игрока
+     */
     update() {
         if (!this.updateFunction) {
             this.updateFunction = throttle(
@@ -49,7 +55,15 @@ export default class Player {
         this.updateFunction();
     }
 
+    /**
+     * Основная логика перемещения по полю
+     */
     applyMovement() {
+        /*
+        Голова змеи находится в якоре камеры, таким образом, при любом вращении голова всегда в плоскости XY,
+        остальное тело змеи находятся напряму в сцене.
+        Для перемещения элементов тела змеи перегоняем локальные координаты якоря в мирвые/
+         */
         const bound = Config.world.field.size - 1;
         const localPosition = this.head.getMesh().position;
         let position = localPosition.clone();
@@ -57,6 +71,7 @@ export default class Player {
 
         this.head.move(DIRECTIONS[this.direction]);
 
+        // при выходе за размер поля поворачиваем камеру в установленном направлении
         if (Math.abs(localPosition.x) >= bound || Math.abs(localPosition.y) >= bound) {
             this.rotateCamera(this.direction);
             const dir = DIRECTIONS[this.direction];
@@ -69,6 +84,7 @@ export default class Player {
             bodyPart.getMesh().position.copy(position);
             position = oldPos;
         });
+        // добавляем новый элемент тела в хвост
         if (this.nextBodyPart) {
             this.nextBodyPart.getMesh().position.copy(position);
             this.body.push(this.nextBodyPart);
@@ -77,7 +93,7 @@ export default class Player {
     }
 
     /**
-     *
+     * Обработка пользовательского ввода
      * @param {String} key
      */
     handleInput(key) {
@@ -97,6 +113,10 @@ export default class Player {
         }
     }
 
+    /**
+     * Запуск анимации поворота
+     * @param {DIRECTION} direction
+     */
     rotateCamera(direction) {
         if (this.camera.isPlayingAnimation()) {
             return;
@@ -131,7 +151,6 @@ export default class Player {
     }
 
     /**
-     *
      * @return {Cube[]}
      */
     getBodyParts() {
@@ -142,13 +161,16 @@ export default class Player {
     }
 
     /**
-     *
      * @return {number}
      */
     printScore() {
         document.querySelector('.score-label').innerHTML = this.score;
     }
 
+    /**
+     * Обработка коллизии
+     * @param {Cube} obj
+     */
     collision(obj) {
         switch (obj.getType()) {
             case OBJECT_TYPES.APPLE:
