@@ -67,12 +67,6 @@ export default class Player {
         const localPosition = this.head.getMesh().position;
         let position = localPosition.clone();
         this.camera.getPivot().localToWorld(position);
-        //убираем погрешности вычислений
-        position = new Vector3(
-            Math.floor(position.x),
-            Math.floor(position.y),
-            Math.floor(position.z)
-        );
 
         this.head.move(DIRECTIONS[this.direction]);
 
@@ -82,6 +76,12 @@ export default class Player {
             const axis = dir.x === 0 ? 'y' : 'x';
             this.head.getMesh().position[axis] = dir[axis] > 0 ? -1 : 1;
         }
+
+        this.body.forEach(bodyPart => {
+            const oldPos = bodyPart.getMesh().position.clone();
+            bodyPart.getMesh().position.copy(position);
+            position = oldPos;
+        });
     }
 
     /**
