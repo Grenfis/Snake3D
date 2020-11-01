@@ -102,25 +102,19 @@ export default class Player {
             return;
         }
 
-        let angle = 0;
         let dir = null;
-
         switch (direction) {
             case DIRECTION.UP:
-                dir = new Vector3(1, 0, 0);
-                angle = -90;
+                dir = new Vector3(-1, 0, 0);
                 break;
             case DIRECTION.DOWN:
                 dir = new Vector3(1, 0, 0);
-                angle = 90;
                 break;
             case DIRECTION.LEFT:
-                dir = new Vector3(0, 1, 0);
-                angle = -90;
+                dir = new Vector3(0, -1, 0);
                 break;
             case DIRECTION.RIGHT:
                 dir = new Vector3(0, 1, 0);
-                angle = 90;
                 break;
         }
         this.camera.setPlayingAnimation(true);
@@ -128,7 +122,7 @@ export default class Player {
             (new Rotation(
                 this.camera.getPivot(),
                 dir,
-                angle,
+                90,
                 Config.render.camera.speed,
             )).onComplete(() => {
                 this.camera.setPlayingAnimation(false);
