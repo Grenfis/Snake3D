@@ -35,6 +35,11 @@ export default class Animation {
         }
     }
 
+    /**
+     *
+     * @param {function} cb
+     * @return {Animation}
+     */
     onComplete(cb) {
         this.onCompleteCb = cb;
         return this;
