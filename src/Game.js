@@ -86,7 +86,7 @@ export default class Game {
             pos[axis[1]] = y;
             pos[axis[2]] = size;
 
-            correctPosition = snake.some(bodyPart => {
+            correctPosition = snake.every(bodyPart => {
                 const p = bodyPart.getPosition();
                 return !this.collider.checkCollision(pos, p);
             });

@@ -28,7 +28,7 @@ export default Object.freeze({
             speed: 700, //как часто делается шаг
         },
         collisions: {
-            minDistance: 0.5,
+            minDistance: 0.9,
         }
     }
 });
