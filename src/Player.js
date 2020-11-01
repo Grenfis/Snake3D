@@ -17,6 +17,7 @@ export default class Player {
 
         this.head = this.objectFactory.getSnakeHead(0, 0, 2, this.camera);
         this.body = [];
+        this.nexBody = []; //сюда добавляются части тела в следующем цикле, для предотвращения триггера коллизий
         this.firstRun = true; //является ли итерация перемещения первой в игре
         this.direction = DIRECTION.RIGHT;
 
@@ -41,6 +42,7 @@ export default class Player {
                         return;
                     }
                     this.applyMovement();
+                    this.applyNextBody();
                 }
             );
         }
@@ -140,14 +142,27 @@ export default class Player {
         ];
     }
 
+    applyNextBody() {
+        this.nexBody.forEach(bodyPart => {
+            this.body.push(bodyPart);
+        });
+        this.nexBody.splice(0, this.nexBody.length);
+    }
+
     collision(obj) {
         switch (obj.getType()) {
             case OBJECT_TYPES.APPLE:
                 this.game.removeObject(obj);
                 this.game.addApple();
+                const pos = this.head.getPosition();
+                this.nexBody.push(this.objectFactory.getSnakeBody(pos.x, pos.y, pos.z));
                 break;
             case OBJECT_TYPES.SNAKE_BODY:
-                //todo: конец игры
+                // если пересеклись во время поворота поля
+                if (this.camera.isPlayingAnimation()) {
+                    return;
+                }
+                this.body.splice(0, this.body.length);
                 break;
         }
     }
