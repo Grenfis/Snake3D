@@ -2,8 +2,6 @@ import Render from "./render/Render";
 import * as ThreeJs from "three";
 import Config from "./Config";
 import Camera from "./render/Camera";
-import Rotation from "./render/animation/Rotation";
-import {Vector3} from "three";
 import Player from "./Player";
 import DrawableFactory from "./render/DrawableFactory";
 
@@ -60,7 +58,6 @@ export default class Game {
 
     handleInput(e) {
         if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-           //this.rotateCamera(e.key);
            this.player.handleInput(e.key);
         }
     }

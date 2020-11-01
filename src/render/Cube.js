@@ -26,6 +26,8 @@ export default class Cube extends Drawable {
             data.y * (Config.world.block + Config.world.gap),
             data.z * (Config.world.block + Config.world.gap)
         );
+
+        this.createMesh();
     }
 
     getGeometry() {
@@ -41,7 +43,7 @@ export default class Cube extends Drawable {
     }
 
     setPosition(x, y, z) {
-        this.position.set(x, y, z);
+        this.mesh.position.set(x, y, z);
     }
 
     /**
@@ -49,6 +51,6 @@ export default class Cube extends Drawable {
      * @param {Vector3} dir
      */
     move(dir) {
-        this.position.add(dir);
+        this.mesh.position.add(dir);
     }
 }

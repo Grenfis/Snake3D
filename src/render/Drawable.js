@@ -1,6 +1,11 @@
 import * as ThreeJs from 'three';
 
 export default class Drawable {
+    constructor(props) {
+        this.mesh = null;
+    }
+
+
     getGeometry() {
         return null;
     }
@@ -14,10 +19,10 @@ export default class Drawable {
     }
 
     /**
-     *
+     * Следует вызывать в конце конструктора имплементации
      * @returns {null|Mesh<*, *>}
      */
-    getMesh() {
+    createMesh() {
         const geometry = this.getGeometry();
         const material = this.getMaterial();
         const position = this.getPosition();
@@ -26,6 +31,14 @@ export default class Drawable {
         }
         const mesh = new ThreeJs.Mesh(geometry, material);
         mesh.position.set(position.x, position.y, position.z);
-        return mesh;
+        this.mesh = mesh;
+    }
+
+    /**
+     *
+     * @return {null | Mesh<*,*>>}
+     */
+    getMesh() {
+        return this.mesh;
     }
 }

@@ -6,98 +6,11 @@ import Camera from "./render/Camera";
 import Render from "./render/Render";
 import Rotation from "./render/animation/Rotation";
 
-const SIDES = Object.freeze({
-    SIDE_1: 0,
-    SIDE_2: 1,
-    SIDE_3: 2,
-    SIDE_4: 3,
-    SIDE_5: 4,
-    SIDE_6: 5,
-});
-
 const DIRECTION = Object.freeze({
     UP: 0,
     DOWN: 1,
     LEFT: 2,
     RIGHT: 3,
-})
-
-const DIRECTIONS = Object.freeze({
-    [SIDES.SIDE_1]: {
-        [DIRECTION.UP]: new Vector3(0, 1, 0),
-        [DIRECTION.DOWN]: new Vector3(0, -1, 0),
-        [DIRECTION.LEFT]: new Vector3(-1, 0, 0),
-        [DIRECTION.RIGHT]: new Vector3(1, 0, 0),
-    },
-    [SIDES.SIDE_2]: {
-        [DIRECTION.UP]: new Vector3(0, 0, -1),
-        [DIRECTION.DOWN]: new Vector3(0, 0, 1),
-        [DIRECTION.LEFT]: new Vector3(-1, 0, 0),
-        [DIRECTION.RIGHT]: new Vector3(1, 0, 0),
-    },
-    [SIDES.SIDE_3]: {
-        [DIRECTION.UP]: new Vector3(0, -1, 0),
-        [DIRECTION.DOWN]: new Vector3(0, 1, 0),
-        [DIRECTION.LEFT]: new Vector3(1, 0, 0),
-        [DIRECTION.RIGHT]: new Vector3(-1, 0, 0),
-    },
-    [SIDES.SIDE_4]: {
-        [DIRECTION.UP]: new Vector3(0, 0, 1),
-        [DIRECTION.DOWN]: new Vector3(0, 0, -1),
-        [DIRECTION.LEFT]: new Vector3(-1, 0, 0),
-        [DIRECTION.RIGHT]: new Vector3(1, 0, 0),
-    },
-    [SIDES.SIDE_5]: {
-        [DIRECTION.UP]: new Vector3(0, 1, 0),
-        [DIRECTION.DOWN]: new Vector3(0, -1, 0),
-        [DIRECTION.LEFT]: new Vector3(0, 0, 1),
-        [DIRECTION.RIGHT]: new Vector3(0, 0, -1),
-    },
-    [SIDES.SIDE_6]: {
-        [DIRECTION.UP]: new Vector3(0, 1, 0),
-        [DIRECTION.DOWN]: new Vector3(0, -1, 0),
-        [DIRECTION.LEFT]: new Vector3(0, 0, -1),
-        [DIRECTION.RIGHT]: new Vector3(0, 0, 1),
-    },
-});
-
-const RELATIONS = Object.freeze({
-    [SIDES.SIDE_1]: {
-        [DIRECTION.UP]: SIDES.SIDE_2,
-        [DIRECTION.DOWN]: SIDES.SIDE_4,
-        [DIRECTION.LEFT]: SIDES.SIDE_6,
-        [DIRECTION.RIGHT]: SIDES.SIDE_5,
-    },
-    [SIDES.SIDE_2]: {
-        [DIRECTION.UP]: SIDES.SIDE_3,
-        [DIRECTION.DOWN]: SIDES.SIDE_1,
-        [DIRECTION.LEFT]: SIDES.SIDE_6,
-        [DIRECTION.RIGHT]: SIDES.SIDE_5,
-    },
-    [SIDES.SIDE_3]: {
-        [DIRECTION.UP]: SIDES.SIDE_4,
-        [DIRECTION.DOWN]: SIDES.SIDE_2,
-        [DIRECTION.LEFT]: SIDES.SIDE_5,
-        [DIRECTION.RIGHT]: SIDES.SIDE_6,
-    },
-    [SIDES.SIDE_4]: {
-        [DIRECTION.UP]: SIDES.SIDE_1,
-        [DIRECTION.DOWN]: SIDES.SIDE_3,
-        [DIRECTION.LEFT]: SIDES.SIDE_6,
-        [DIRECTION.RIGHT]: SIDES.SIDE_5,
-    },
-    [SIDES.SIDE_5]: {
-        [DIRECTION.UP]: SIDES.SIDE_2,
-        [DIRECTION.DOWN]: SIDES.SIDE_4,
-        [DIRECTION.LEFT]: SIDES.SIDE_1,
-        [DIRECTION.RIGHT]: SIDES.SIDE_3,
-    },
-    [SIDES.SIDE_6]: {
-        [DIRECTION.UP]: SIDES.SIDE_2,
-        [DIRECTION.DOWN]: SIDES.SIDE_4,
-        [DIRECTION.LEFT]: SIDES.SIDE_3,
-        [DIRECTION.RIGHT]: SIDES.SIDE_1,
-    },
 });
 
 export default class Player {
@@ -109,15 +22,15 @@ export default class Player {
      */
     constructor(drawableFactory, render, camera) {
         this.drawableFactory = drawableFactory;
-        this.body = [
-            this.drawableFactory.getSnakeHead(0, 0, 2),
-        ];
+        this.head = this.drawableFactory.getSnakeHead(0, 0, 2);
+        this.body = [];
         this.firstRun = true; //является ли итерация перемещения первой в игре
-        this.side = SIDES.SIDE_1;
         this.direction = DIRECTION.RIGHT;
-        this.face = new Vector3(1, 0, 0);
+        this.dirVector = new Vector3(1, 0, 0);
         this.render = render;
         this.camera = camera;
+
+        this.camera.getPivot().add(this.head.getMesh());
     }
 
     draw(render) {
@@ -136,7 +49,7 @@ export default class Player {
                         this.firstRun = false;
                         return;
                     }
-                   this.applyMovement();
+                    this.applyMovement();
                 }
             );
         }
@@ -145,21 +58,23 @@ export default class Player {
 
     applyMovement() {
         const bound = Config.world.field.size - 1;
-        const position = this.body[0].position;
+        const localPosition = this.head.getMesh().position;
+        let position = localPosition.clone();
+        this.camera.getPivot().localToWorld(position);
+        //убираем погрешности вычислений
+        position = new Vector3(
+            Math.floor(position.x),
+            Math.floor(position.y),
+            Math.floor(position.z)
+        );
 
-        const axesY = DIRECTIONS[this.side][DIRECTION.UP].y !== 0 ? 'y' :
-            DIRECTIONS[this.side][DIRECTION.UP].x !== 0 ?  'x' : 'z'; // название оси по вертикали
-        const axesX = DIRECTIONS[this.side][DIRECTION.LEFT].y !== 0 ? 'y' :
-            DIRECTIONS[this.side][DIRECTION.LEFT].x !== 0 ? 'x' : 'z'; // название оси по горизонтали
+        this.head.move(this.dirVector);
 
-        if (Math.abs(position[axesX]) >= bound || Math.abs(position[axesY]) >= bound) {
+        if (Math.abs(localPosition.x) >= bound || Math.abs(localPosition.y) >= bound) {
             this.rotateCamera(this.direction);
-            this.side = RELATIONS[this.side][this.direction];
+            const axis = this.dirVector.x === 0 ? 'y' : 'x';
+            this.head.getMesh().position[axis] = this.dirVector[axis] > 0 ? -1 : 1;
         }
-
-        this.body.forEach(bodyPart => {
-           bodyPart.move(DIRECTIONS[this.side][this.direction]);
-        });
     }
 
     /**
@@ -170,15 +85,19 @@ export default class Player {
         switch (key) {
             case 'ArrowUp':
                 this.direction = DIRECTION.UP;
+                this.dirVector = new Vector3(0, 1, 0);
                 break;
             case 'ArrowDown':
                 this.direction = DIRECTION.DOWN;
+                this.dirVector = new Vector3(0, -1, 0);
                 break;
             case 'ArrowLeft':
                 this.direction = DIRECTION.LEFT;
+                this.dirVector = new Vector3(-1, 0, 0);
                 break;
             case 'ArrowRight':
                 this.direction = DIRECTION.RIGHT;
+                this.dirVector = new Vector3(1, 0, 0);
                 break;
         }
     }

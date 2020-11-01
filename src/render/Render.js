@@ -4,7 +4,6 @@ export default class Render {
     constructor(camera) {
         this.renderer = new ThreeJs.WebGLRenderer();
         this.camera = camera;
-        this.axesHelper = new ThreeJs.AxesHelper( 5 );
 
         this.renderQueue = [];
         this.animationQueue = [];
@@ -28,7 +27,6 @@ export default class Render {
 
         scene.add(this.sky);
         scene.add(this.camera.getPivot());
-        scene.add(this.axesHelper);
 
         this.renderAnimation(dt);
 
