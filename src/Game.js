@@ -19,6 +19,7 @@ export default class Game {
         this.player = new Player(this);
         this.collider = new Collider();
         this.objects = [];
+        this.run = false;
 
         this.initField();
         this.addApple();
@@ -54,12 +55,13 @@ export default class Game {
             });
 
             this.player.draw(this.render);
-            this.player.update();
-
-            this.collider.checkCollisions([
-                ...this.player.getBodyParts(),
-                ...this.objects,
-            ]);
+            if (this.run) {
+                this.player.update();
+                this.collider.checkCollisions([
+                    ...this.player.getBodyParts(),
+                    ...this.objects,
+                ]);
+            }
 
             this.objects.forEach(obj => {
                 this.render.pushToRender(obj);
@@ -107,5 +109,24 @@ export default class Game {
         if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
             this.player.handleInput(e.key);
         }
+        if (e.key === 'Escape') {
+            this.runGame();
+        }
+    }
+
+    runGame() {
+        if (this.run) {
+            return;
+        }
+
+        document.querySelector('.new-game').style.cssText = 'display: none;';
+        this.run = true;
+        this.objects.splice(0, this.objects.length);
+        this.addApple();
+    }
+
+    gameOver() {
+        this.run = false;
+        document.querySelector('.new-game').style.cssText = 'display: block;';
     }
 }

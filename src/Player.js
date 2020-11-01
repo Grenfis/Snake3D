@@ -164,6 +164,7 @@ export default class Player {
                 }
                 this.body.splice(0, this.body.length);
                 this.score = 0;
+                this.game.gameOver();
                 break;
         }
         this.printScore();
