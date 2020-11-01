@@ -16,7 +16,7 @@ export default class Game {
         this.deltaTime = 0;
         this.frameRate = 1 / Config.render.frameRate;
         this.objectFactory = new ObjectFactory();
-        this.player = new Player(this.objectFactory, this.render, this.camera);
+        this.player = new Player(this);
         this.collider = new Collider();
         this.objects = [];
 
@@ -94,6 +94,13 @@ export default class Game {
             apple.setPosition(pos.x, pos.y, pos.z);
         } while(!correctPosition);
         this.objects.push(apple);
+    }
+
+    removeObject(obj) {
+        const idx = this.objects.findIndex(o => obj === o);
+        if (idx >= 0) {
+            this.objects.splice(idx, 1);
+        }
     }
 
     handleInput(e) {

@@ -1,33 +1,27 @@
-import ObjectFactory from "./ObjectFactory";
 import {Vector3} from "three";
 import {throttle} from "throttle-debounce";
 import Config from "./Config";
-import Camera from "./render/Camera";
-import Render from "./render/Render";
 import Rotation from "./render/animation/Rotation";
-import {DIRECTION, DIRECTIONS} from "./Constants";
+import {DIRECTION, DIRECTIONS, OBJECT_TYPES} from "./Constants";
 
 export default class Player {
     /**
      *
-     * @param {ObjectFactory} objectFactory
-     * @param {Render} render
-     * @param {Camera} camera
+     * @param {Game} game
      */
-    constructor(objectFactory, render, camera) {
-        this.objectFactory = objectFactory;
-        this.head = this.objectFactory.getSnakeHead(0, 0, 2);
+    constructor(game) {
+        this.objectFactory = game.objectFactory;
+        this.render = game.render;
+        this.camera = game.camera;
+        this.game = game;
+
+        this.head = this.objectFactory.getSnakeHead(0, 0, 2, this.camera);
         this.body = [];
         this.firstRun = true; //является ли итерация перемещения первой в игре
         this.direction = DIRECTION.RIGHT;
-        this.render = render;
-        this.camera = camera;
 
         this.camera.getPivot().add(this.head.getMesh());
-
-        this.head.setOnCollision(obj => {
-            console.log(obj.getId());
-        })
+        this.head.setOnCollision(obj => this.collision(obj));
     }
 
     draw(render) {
@@ -144,5 +138,17 @@ export default class Player {
             this.head,
             ...this.body
         ];
+    }
+
+    collision(obj) {
+        switch (obj.getType()) {
+            case OBJECT_TYPES.APPLE:
+                this.game.removeObject(obj);
+                this.game.addApple();
+                break;
+            case OBJECT_TYPES.SNAKE_BODY:
+                //todo: конец игры
+                break;
+        }
     }
 }

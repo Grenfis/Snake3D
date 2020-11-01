@@ -10,7 +10,7 @@ export default class Cube {
      * @param {Number} data.z
      * @param {Number} data.w
      * @param {Texture} data.texture
-     * @param {Number} data.id
+     * @param {Number} data.type
      */
     constructor(data) {
         this.collisionCB = null;
@@ -29,15 +29,15 @@ export default class Cube {
 
         this.mesh = new ThreeJs.Mesh(geometry, material);
         this.mesh.position.set(position.x, position.y, position.z);
-        this.id = data.id;
+        this.type = data.type;
     }
 
     /**
      *
      * @return {Number}
      */
-    getId() {
-        return this.id;
+    getType() {
+        return this.type;
     }
 
     /**

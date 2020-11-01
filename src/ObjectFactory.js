@@ -2,6 +2,7 @@ import {TextureLoader} from "three";
 import Cube from "./Cube";
 import Config from "./Config";
 import {OBJECT_TYPES} from "./Constants";
+import SnakeHead from "./SnakeHead";
 
 export default class ObjectFactory {
     constructor() {
@@ -18,7 +19,7 @@ export default class ObjectFactory {
             x, y, z,
             texture: this.loader.load('/asstes/box.jpg'),
             w: Config.world.block,
-            id: OBJECT_TYPES.FIELD,
+            type: OBJECT_TYPES.FIELD,
         });
     }
 
@@ -32,7 +33,7 @@ export default class ObjectFactory {
             x, y, z,
             texture: this.loader.load('/asstes/snake_body.jpg'),
             w: Config.world.snake,
-            id: OBJECT_TYPES.SNAKE_BODY,
+            type: OBJECT_TYPES.SNAKE_BODY,
         });
     }
 
@@ -40,14 +41,15 @@ export default class ObjectFactory {
      * @param {number} x
      * @param {number} y
      * @param {number} z
+     * @param {Camera} camera
      */
-    getSnakeHead(x, y, z) {
-        return new Cube({
+    getSnakeHead(x, y, z, camera) {
+        return new SnakeHead({
             x, y, z,
             texture: this.loader.load('/asstes/snake_head.jpg'),
             w: Config.world.snake,
-            id: OBJECT_TYPES.SNAKE_HEAD,
-        });
+            type: OBJECT_TYPES.SNAKE_HEAD,
+        }, camera);
     }
 
     /**
@@ -60,7 +62,7 @@ export default class ObjectFactory {
             x, y, z,
             texture: this.loader.load('/asstes/apple.jpg'),
             w: Config.world.apple,
-            id: OBJECT_TYPES.APPLE,
+            type: OBJECT_TYPES.APPLE,
         });
     }
 }
