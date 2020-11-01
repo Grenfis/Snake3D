@@ -10,33 +10,26 @@ export default class Cube {
      * @param {Number} data.z
      * @param {Number} data.w
      * @param {Texture} data.texture
+     * @param {Number} data.id
      */
     constructor(data) {
+        this.collisionCB = null;
 
-        this.geometry = new ThreeJs.BoxGeometry(
+        const geometry = new ThreeJs.BoxGeometry(
             data.w, data.w, data.w
         );
-        this.material = new ThreeJs.MeshPhongMaterial({
+        const material = new ThreeJs.MeshPhongMaterial({
             map: data.texture,
         });
-        this.position = new Vector3(
+        const position = new Vector3(
             data.x * (Config.world.block + Config.world.gap),
             data.y * (Config.world.block + Config.world.gap),
             data.z * (Config.world.block + Config.world.gap)
         );
-        this.mesh = null;
 
-        this.createMesh();
-    }
-
-    /**
-     * Следует вызывать в конце конструктора имплементации
-     * @returns {null|Mesh<*, *>}
-     */
-    createMesh() {
-        const mesh = new ThreeJs.Mesh(this.geometry, this.material);
-        mesh.position.set(this.position.x, this.position.y, this.position.z);
-        this.mesh = mesh;
+        this.mesh = new ThreeJs.Mesh(geometry, material);
+        this.mesh.position.set(position.x, position.y, position.z);
+        this.id = data.id;
     }
 
     /**
@@ -55,16 +48,23 @@ export default class Cube {
         this.mesh.position.add(dir);
     }
 
+    setOnCollision(cb) {
+        this.collisionCB = cb;
+    }
+
     /**
      * @param {Cube} obj объект с которым произошла коллизия
      */
     onCollision(obj) {
+        if (typeof this.collisionCB === 'function') {
+            this.collisionCB(obj);
+        }
     }
 
     /**
-     * @return {Vector3 | null}
+     * @return {Vector3}
      */
-    getPhysicsPosition() {
-        return null;
+    getPosition() {
+        return this.mesh.position;
     }
 }

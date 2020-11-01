@@ -5,20 +5,7 @@ import Config from "./Config";
 import Camera from "./render/Camera";
 import Render from "./render/Render";
 import Rotation from "./render/animation/Rotation";
-
-const DIRECTION = Object.freeze({
-    UP: 0,
-    DOWN: 1,
-    LEFT: 2,
-    RIGHT: 3,
-});
-
-const DIRECTIONS = Object.freeze({
-    [DIRECTION.UP]: new Vector3(0, 1, 0),
-    [DIRECTION.DOWN]: new Vector3(0, -1, 0),
-    [DIRECTION.LEFT]: new Vector3(-1, 0, 0),
-    [DIRECTION.RIGHT]: new Vector3(1, 0, 0),
-});
+import {DIRECTION, DIRECTIONS} from "./Constants";
 
 export default class Player {
     /**
@@ -142,5 +129,16 @@ export default class Player {
                 this.camera.setPlayingAnimation(false);
             })
         );
+    }
+
+    /**
+     *
+     * @return {Cube[]}
+     */
+    getBodyParts() {
+        return [
+            this.head,
+            ...this.body
+        ];
     }
 }
