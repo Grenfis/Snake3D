@@ -1,6 +1,9 @@
 import * as ThreeJs from "three";
 
 export default class Render {
+    /**
+     * @param {Camera} camera
+     */
     constructor(camera) {
         this.renderer = new ThreeJs.WebGLRenderer();
         this.camera = camera;
@@ -42,6 +45,10 @@ export default class Render {
         this.renderQueue = [];
     }
 
+    /**
+     * Функция обработки анимации
+     * @param {number} dt
+     */
     renderAnimation(dt) {
         const idxs = [];
         this.animationQueue.forEach((anim, idx) => {
@@ -56,10 +63,18 @@ export default class Render {
         });
     }
 
+    /**
+     *
+     * @param {Cube} object
+     */
     pushToRender(object) {
         this.renderQueue.push(object);
     }
 
+    /**
+     *
+     * @param {Animation} anim
+     */
     pushAnimation(anim) {
         this.animationQueue.push(anim);
     }
