@@ -1,9 +1,8 @@
 import * as ThreeJs from "three";
-import Drawable from "./render/Drawable";
 import {Vector3, Texture} from "three";
 import Config from "./Config";
 
-export default class Cube extends Drawable {
+export default class Cube {
     /**
      * Координаты, выравненые на сетку
      * @param {Number} data.x
@@ -13,10 +12,9 @@ export default class Cube extends Drawable {
      * @param {Texture} data.texture
      */
     constructor(data) {
-        super();
 
         this.geometry = new ThreeJs.BoxGeometry(
-            data.w,data.w,data.w
+            data.w, data.w, data.w
         );
         this.material = new ThreeJs.MeshPhongMaterial({
             map: data.texture,
@@ -26,24 +24,27 @@ export default class Cube extends Drawable {
             data.y * (Config.world.block + Config.world.gap),
             data.z * (Config.world.block + Config.world.gap)
         );
+        this.mesh = null;
 
         this.createMesh();
     }
 
-    getGeometry() {
-        return this.geometry;
+    /**
+     * Следует вызывать в конце конструктора имплементации
+     * @returns {null|Mesh<*, *>}
+     */
+    createMesh() {
+        const mesh = new ThreeJs.Mesh(this.geometry, this.material);
+        mesh.position.set(this.position.x, this.position.y, this.position.z);
+        this.mesh = mesh;
     }
 
-    getMaterial() {
-        return this.material;
-    }
-
-    getPosition() {
-        return this.position;
-    }
-
-    setPosition(x, y, z) {
-        this.mesh.position.set(x, y, z);
+    /**
+     *
+     * @return {null | Mesh<*,*>>}
+     */
+    getMesh() {
+        return this.mesh;
     }
 
     /**
@@ -52,5 +53,18 @@ export default class Cube extends Drawable {
      */
     move(dir) {
         this.mesh.position.add(dir);
+    }
+
+    /**
+     * @param {Cube} obj объект с которым произошла коллизия
+     */
+    onCollision(obj) {
+    }
+
+    /**
+     * @return {Vector3 | null}
+     */
+    getPhysicsPosition() {
+        return null;
     }
 }
