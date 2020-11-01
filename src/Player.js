@@ -20,6 +20,7 @@ export default class Player {
         this.nextBodyPart = null; //сюда добавляются части тела в следующем цикле, для предотвращения триггера коллизий
         this.firstRun = true; //является ли итерация перемещения первой в игре
         this.direction = DIRECTION.RIGHT;
+        this.score = 0;
 
         this.camera.getPivot().add(this.head.getMesh());
         this.head.setOnCollision(obj => this.collision(obj));
@@ -146,12 +147,21 @@ export default class Player {
         ];
     }
 
+    /**
+     *
+     * @return {number}
+     */
+    printScore() {
+        document.querySelector('.score-label').innerHTML = this.score;
+    }
+
     collision(obj) {
         switch (obj.getType()) {
             case OBJECT_TYPES.APPLE:
                 this.game.removeObject(obj);
                 this.game.addApple();
                 this.nextBodyPart = this.objectFactory.getSnakeBody(0,0,0);
+                this.score += 1;
                 break;
             case OBJECT_TYPES.SNAKE_BODY:
                 // если пересеклись во время поворота поля
@@ -159,7 +169,9 @@ export default class Player {
                     return;
                 }
                 this.body.splice(0, this.body.length);
+                this.score = 0;
                 break;
         }
+        this.printScore();
     }
 }
