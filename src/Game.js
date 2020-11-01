@@ -19,7 +19,7 @@ export default class Game {
         this.player = new Player(this);
         this.collider = new Collider();
         this.objects = [];
-        this.run = false;
+        this.run = false; // статус состояния игры (запущена, окончена)
 
         this.initField();
         this.addApple();
@@ -45,6 +45,9 @@ export default class Game {
         ];
     }
 
+    /**
+     * Основной цикл игры
+     */
     tick() {
         const delta = this.clock.getDelta();
         this.deltaTime += delta;
@@ -73,6 +76,9 @@ export default class Game {
         window.requestAnimationFrame(() => this.tick());
     }
 
+    /**
+     * Добавляет яблоко на игровое поле, туда где нет тела змеи
+     */
     addApple() {
         const snake = this.player.getBodyParts();
         const apple = this.objectFactory.getApple(0,0,0);
@@ -81,7 +87,7 @@ export default class Game {
             const size = Config.world.field.size - 1;
             const x = Math.floor(Math.random() * Config.world.field.size) - Math.floor(size / 2);
             const y = Math.floor(Math.random() * Config.world.field.size) - Math.floor(size / 2);
-            const axis = SIDES_AXES[Math.floor(Math.random() * SIDES_AXES.length)];
+            const axis = SIDES_AXES[Math.floor(Math.random() * SIDES_AXES.length)]; //выбираем плоскость
             const pos = new Vector3(0,0,0);
 
             pos[axis[0]] = x;
@@ -98,6 +104,9 @@ export default class Game {
         this.objects.push(apple);
     }
 
+    /**
+     * @param {Cube} obj
+     */
     removeObject(obj) {
         const idx = this.objects.findIndex(o => obj === o);
         if (idx >= 0) {
@@ -105,6 +114,10 @@ export default class Game {
         }
     }
 
+    /**
+     * Обработка ввода пользователя
+     * @param e
+     */
     handleInput(e) {
         if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
             this.player.handleInput(e.key);
@@ -114,6 +127,9 @@ export default class Game {
         }
     }
 
+    /**
+     * Запускает игру
+     */
     runGame() {
         if (this.run) {
             return;
