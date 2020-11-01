@@ -72,18 +72,28 @@ export default class Game {
     }
 
     addApple() {
-        const size = Config.world.field.size - 1;
-        const x = Math.floor(Math.random() * Config.world.field.size) - Math.floor(size / 2);
-        const y = Math.floor(Math.random() * Config.world.field.size) - Math.floor(size / 2);
-        const axis = SIDES_AXES[Math.floor(Math.random() * SIDES_AXES.length)];
-        const pos = new Vector3(0,0,0);
+        const snake = this.player.getBodyParts();
+        const apple = this.objectFactory.getApple(0,0,0);
+        let correctPosition = false;
+        do {
+            const size = Config.world.field.size - 1;
+            const x = Math.floor(Math.random() * Config.world.field.size) - Math.floor(size / 2);
+            const y = Math.floor(Math.random() * Config.world.field.size) - Math.floor(size / 2);
+            const axis = SIDES_AXES[Math.floor(Math.random() * SIDES_AXES.length)];
+            const pos = new Vector3(0,0,0);
 
-        pos[axis[0]] = x;
-        pos[axis[1]] = y;
-        pos[axis[2]] = size;
+            pos[axis[0]] = x;
+            pos[axis[1]] = y;
+            pos[axis[2]] = size;
 
-        const apple = this.objectFactory.getApple(pos.x, pos.y, pos.z);
-        this.objects.push(apple,);
+            correctPosition = snake.some(bodyPart => {
+                const p = bodyPart.getPosition();
+                return !this.collider.checkCollision(pos, p);
+            })
+
+            apple.setPosition(pos.x, pos.y, pos.z);
+        } while(!correctPosition);
+        this.objects.push(apple);
     }
 
     handleInput(e) {

@@ -24,6 +24,10 @@ export default class Player {
         this.camera = camera;
 
         this.camera.getPivot().add(this.head.getMesh());
+
+        this.head.setOnCollision(obj => {
+            console.log(obj.getId());
+        })
     }
 
     draw(render) {

@@ -34,10 +34,22 @@ export default class Cube {
 
     /**
      *
+     * @return {Number}
+     */
+    getId() {
+        return this.id;
+    }
+
+    /**
+     *
      * @return {null | Mesh<*,*>>}
      */
     getMesh() {
         return this.mesh;
+    }
+
+    setPosition(x, y, z) {
+        this.mesh.position.set(x, y, z);
     }
 
     /**
