@@ -13,6 +13,13 @@ const DIRECTION = Object.freeze({
     RIGHT: 3,
 });
 
+const DIRECTIONS = Object.freeze({
+    [DIRECTION.UP]: new Vector3(0, 1, 0),
+    [DIRECTION.DOWN]: new Vector3(0, -1, 0),
+    [DIRECTION.LEFT]: new Vector3(-1, 0, 0),
+    [DIRECTION.RIGHT]: new Vector3(1, 0, 0),
+});
+
 export default class Player {
     /**
      *
@@ -26,7 +33,6 @@ export default class Player {
         this.body = [];
         this.firstRun = true; //является ли итерация перемещения первой в игре
         this.direction = DIRECTION.RIGHT;
-        this.dirVector = new Vector3(1, 0, 0);
         this.render = render;
         this.camera = camera;
 
@@ -68,12 +74,13 @@ export default class Player {
             Math.floor(position.z)
         );
 
-        this.head.move(this.dirVector);
+        this.head.move(DIRECTIONS[this.direction]);
 
         if (Math.abs(localPosition.x) >= bound || Math.abs(localPosition.y) >= bound) {
             this.rotateCamera(this.direction);
-            const axis = this.dirVector.x === 0 ? 'y' : 'x';
-            this.head.getMesh().position[axis] = this.dirVector[axis] > 0 ? -1 : 1;
+            const dir = DIRECTIONS[this.direction];
+            const axis = dir.x === 0 ? 'y' : 'x';
+            this.head.getMesh().position[axis] = dir[axis] > 0 ? -1 : 1;
         }
     }
 
@@ -85,19 +92,15 @@ export default class Player {
         switch (key) {
             case 'ArrowUp':
                 this.direction = DIRECTION.UP;
-                this.dirVector = new Vector3(0, 1, 0);
                 break;
             case 'ArrowDown':
                 this.direction = DIRECTION.DOWN;
-                this.dirVector = new Vector3(0, -1, 0);
                 break;
             case 'ArrowLeft':
                 this.direction = DIRECTION.LEFT;
-                this.dirVector = new Vector3(-1, 0, 0);
                 break;
             case 'ArrowRight':
                 this.direction = DIRECTION.RIGHT;
-                this.dirVector = new Vector3(1, 0, 0);
                 break;
         }
     }
