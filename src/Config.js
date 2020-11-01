@@ -25,7 +25,7 @@ export default Object.freeze({
     },
     game: {
         snake: {
-            speed: 1000, //как часто делается шаг
+            speed: 700, //как часто делается шаг
         },
         collisions: {
             minDistance: 0.5,

@@ -89,7 +89,7 @@ export default class Game {
             correctPosition = snake.some(bodyPart => {
                 const p = bodyPart.getPosition();
                 return !this.collider.checkCollision(pos, p);
-            })
+            });
 
             apple.setPosition(pos.x, pos.y, pos.z);
         } while(!correctPosition);
